@@ -4,6 +4,11 @@
   "description": "swagger api doc panel",
   "publisher": "elsaooo",
   "version": "0.0.1",
+  "icon": "images/logo.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ElsaOOo/vscode-swagger-panel.git"
+  },
   "engines": {
     "vscode": "^1.60.0"
   },

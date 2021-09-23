@@ -1,0 +1,62 @@
+<!-- HTML for static distribution bundle build -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" />
+    <title>Swagger UI</title>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/swagger-ui/3.51.2/swagger-ui.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      html {
+        box-sizing: border-box;
+        overflow: -moz-scrollbars-vertical;
+        overflow-y: scroll;
+      }
+
+      *,
+      *:before,
+      *:after {
+        box-sizing: inherit;
+      }
+
+      body {
+        margin: 0;
+        background: #fafafa;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="swagger-ui"></div>
+    <script
+      src="https://unpkg.com/swagger-ui-dist@3/swagger-ui-bundle.js"
+      charset="UTF-8"
+    ></script>
+    <script>
+      window.addEventListener('message', (event) => {
+        const message = event.data
+        if (message.url) {
+          ui = SwaggerUIBundle({
+            url: message.url,
+            dom_id: '#swagger-ui',
+            deepLinking: true,
+            presets: [
+              SwaggerUIBundle.presets.apis,
+
+              // SwaggerUIStandalonePreset
+            ],
+            plugins: [SwaggerUIBundle.plugins.DownloadUrl],
+            // layout: 'StandaloneLayout',
+          })
+          // End Swagger UI call region
+
+          window.ui = ui
+        }
+      })
+    </script>
+  </body>
+</html>

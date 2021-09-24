@@ -22,12 +22,6 @@ after install this extension
 
 ## Known Issues
 
-## Release Notes
-
-### 1.0.0
-
-first release!!!
-
 ---
 
 **Enjoy!**

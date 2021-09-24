@@ -7,6 +7,26 @@ import { SwaggerTreeViewProvider } from './SwaggerTreeViewProvider'
 
 let timer: NodeJS.Timeout
 
+function setHtmlContent(
+  rawHtml: string,
+  webview: vscode.Webview,
+  extensionContext: vscode.ExtensionContext
+) {
+  let htmlContent = rawHtml
+  const swaggerUiBundlejSFilePath = vscode.Uri.file(
+    path.join(extensionContext.extensionPath, 'web', 'swagger-ui-bundle.js')
+  )
+  const swaggerUiBundlejSFileUri = webview.asWebviewUri(
+    swaggerUiBundlejSFilePath
+  )
+  htmlContent = htmlContent.replace(
+    'swagger-ui-bundle.js',
+    // swaggerUiBundlejSFileUri.toString() 出来的地址会带%2B, 需要去掉，不然加载不到
+    swaggerUiBundlejSFileUri.toString().replace('%2B', '')
+  )
+  return htmlContent
+}
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -48,7 +68,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   let disposable = vscode.commands.registerCommand(
     'swagger-panel.swaggerDoc',
-    (args) => {
+    async (args) => {
       if (currentPanel) {
         currentPanel.dispose()
       }
@@ -69,12 +89,16 @@ export function activate(context: vscode.ExtensionContext) {
       const htmlPath = path.join(context.extensionPath, 'web', 'index.html')
       let html = fs.readFileSync(htmlPath, 'utf-8')
       // 设置HTML内容
-      currentPanel.webview.html = html
+      currentPanel.webview.html = setHtmlContent(
+        html,
+        currentPanel.webview,
+        context
+      )
       timer = setTimeout(() => {
         currentPanel!.webview.postMessage({
           url: args,
         })
-      }, 800)
+      }, 400)
     }
   )
 

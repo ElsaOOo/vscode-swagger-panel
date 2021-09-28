@@ -3,7 +3,7 @@
   "displayName": "Swagger Panel",
   "description": "swagger api doc panel",
   "publisher": "elsaooo",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "icon": "images/logo.png",
   "repository": {
     "type": "git",
@@ -16,7 +16,6 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:swagger-panel.helloWorld",
     "onCommand:swagger-panel.swaggerDoc",
     "onView:swagger-doc"
   ],

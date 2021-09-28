@@ -12,6 +12,9 @@ after install this extension
 
 ![initial state](./images/initial-state.jpg)
 
+**page view**
+![initial state](./images/page-view.jpg)
+
 **add a new swagger url**
 
 ![add a new swagger url](./images/how-to-do.gif)

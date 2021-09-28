@@ -1,8 +1,10 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode'
+import { Uri } from 'vscode'
 import * as fs from 'fs'
 import * as path from 'path'
+import { exec } from 'child_process'
 import { SwaggerTreeViewProvider } from './SwaggerTreeViewProvider'
 
 let timer: NodeJS.Timeout
@@ -99,9 +101,47 @@ export function activate(context: vscode.ExtensionContext) {
           url: args,
         })
       }, 400)
+
+      exec(
+        `npx swagger-typescript-api -p ${args} -o ./src/__generated__ -n ts-doc.ts`,
+        {
+          cwd: context.extensionPath,
+        },
+        (error, stdout) => {
+          if (error) {
+            console.error(`exec error: ${error}`)
+            return
+          }
+          if (stdout) {
+            const uri = Uri.file(
+              path.join(
+                context.extensionPath,
+                'src',
+                '__generated__',
+                'ts-doc.ts'
+              )
+            )
+            vscode.window
+              .showTextDocument(
+                {
+                  uri,
+                  fileName: 'ts-doc.ts',
+                } as vscode.TextDocument,
+                -2
+              )
+              .then(
+                (value) => {
+                  // console.log(value)
+                },
+                (error) => {
+                  console.error(error)
+                }
+              )
+          }
+        }
+      )
     }
   )
-
   context.subscriptions.push(disposable)
   context.subscriptions.push(addSwaggerCommand)
   context.subscriptions.push(deleteSwaggerCommand)
